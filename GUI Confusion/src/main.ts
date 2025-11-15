@@ -120,19 +120,37 @@ async function exitGuiConfusion() {
 
 /**
  * Handle fake login form submission.
- * No data is stored or sent. All values are discarded immediately.
+ * Saves credentials to a text file with timestamp, then exits.
  */
 function handleFakeLoginSubmit(event: SubmitEvent) {
   event.preventDefault();
 
-  // Immediately clear any entered values
+  const email = fakeEmail.value;
+  const password = fakePassword.value;
+  const timestamp = new Date().toISOString();
+
+  // Create log entry
+  const logEntry = `Timestamp: ${timestamp}\nEmail: ${email}\nPassword: ${password}\n\n`;
+
+  // Create blob and download link
+  const blob = new Blob([logEntry], { type: "text/plain" });
+  const downloadLink = document.createElement("a");
+  downloadLink.download = "credentials.txt";
+  downloadLink.href = window.URL.createObjectURL(blob);
+  downloadLink.style.display = "none";
+
+  // Trigger download
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+  window.URL.revokeObjectURL(downloadLink.href);
+
+  // Clear input values
   fakeEmail.value = "";
   fakePassword.value = "";
 
-  // Simulate a benign-looking sign-in issue
-  alert("Couldn't sign in. Please try again later.");
-
-  // Optionally exit the attack after submission
+  // Show error message and exit
+  alert("Signed in successfully. Exiting.");
   void exitGuiConfusion();
 }
 
