@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Help Center - Account Settings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+  <body>
+    <!-- Normal benign page -->
+    <div id="page-root" class="page-root">
+      <header class="top-bar">
+        <div class="brand">Acme Account Portal</div>
+        <nav class="nav-links">
+          <a href="#" class="nav-link">Dashboard</a>
+          <a href="#" class="nav-link">Security</a>
+          <a href="#" class="nav-link">Billing</a>
+        </nav>
+      </header>
+
+      <main class="content">
+        <section class="card">
+          <h1>Account Security Checkup</h1>
+          <p>
+            Use this page to review your account activity, sign-in devices, and
+            security alerts.
+          </p>
+
+          <ul class="info-list">
+            <li>Last sign-in: 2 hours ago</li>
+            <li>Multi-factor authentication: Enabled</li>
+            <li>Recovery email: configured</li>
+          </ul>
+
+          <button id="help-button" class="primary-btn">
+            Need help with sign in?
+          </button>
+        </section>
+
+        <!-- Small help popup that will trigger the fullscreen "attack" -->
+        <div id="help-popup" class="help-popup hidden">
+          <div class="help-popup-inner">
+            <h2>Sign in help</h2>
+            <p>
+              If you are having trouble signing in, we can re-check your
+              connected Google account.
+            </p>
+            <p class="help-note">
+              You will see a Google style sign-in screen to confirm your
+              account. Use only demo or dummy information.
+            </p>
+            <div class="help-popup-actions">
+              <button id="help-cancel" class="ghost-btn">Cancel</button>
+              <button id="help-continue" class="primary-btn">
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Fake Google Sign In fullscreen overlay -->
+    <div id="fake-google-root" class="fake-root hidden">
+      <div class="fake-bg">
+        <div class="fake-card">
+          <div class="fake-logo-circle">G</div>
+
+          <h1 class="fake-title">Sign in</h1>
+          <p class="fake-subtitle">Use your Google Account</p>
+
+          <form id="fake-login-form" class="fake-form">
+            <label class="fake-label">
+              <input
+                id="fake-email"
+                type="email"
+                class="fake-input"
+                placeholder="Email or phone"
+                autocomplete="off"
+              />
+            </label>
+
+            <button type="button" class="fake-link-btn" id="fake-forgot">
+              Forgot email
+            </button>
+
+            <div class="divider-space"></div>
+
+            <label class="fake-label">
+              <input
+                id="fake-password"
+                type="password"
+                class="fake-input"
+                placeholder="Enter your password"
+                autocomplete="off"
+              />
+            </label>
+
+            <div class="fake-form-footer">
+              <button type="button" class="fake-link-btn">
+                Learn more
+              </button>
+              <button type="submit" class="primary-btn fake-submit">
+                Next
+              </button>
+            </div>
+          </form>
+
+          <div class="fake-footer-links">
+            <button type="button" class="fake-link-btn">Create account</button>
+            <span class="dot-separator"></span>
+            <button
+              type="button"
+              id="exit-fullscreen"
+              class="fake-link-btn dangerous-link"
+            >
+              Exit
+            </button>
+          </div>
+
+          <p class="fake-disclaimer">
+            Demo only. Do not enter real credentials. No data is stored.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
