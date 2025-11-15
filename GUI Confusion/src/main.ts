@@ -2,15 +2,17 @@
 
 import "./styles.css";
 
-// This code implements a local-only GUI confusion style attack demo
-// for a user study. It must only be used on localhost with dummy data.
+const PAYWALL_DELAY_MS = 10_000;
 
-const helpButton = document.getElementById("help-button") as HTMLButtonElement;
-const helpPopup = document.getElementById("help-popup") as HTMLDivElement;
-const helpCancel = document.getElementById("help-cancel") as HTMLButtonElement;
-const helpContinue = document.getElementById(
-  "help-continue"
-) as HTMLButtonElement;
+const paywallOverlay = document.getElementById(
+  "paywall-overlay"
+) as HTMLDivElement | null;
+const paywallContinue = document.getElementById(
+  "paywall-continue"
+) as HTMLButtonElement | null;
+const paywallDismiss = document.getElementById(
+  "paywall-dismiss"
+) as HTMLButtonElement | null;
 
 const pageRoot = document.getElementById("page-root") as HTMLDivElement;
 const fakeRoot = document.getElementById("fake-google-root") as HTMLDivElement;
@@ -22,12 +24,47 @@ const fakePassword = document.getElementById(
   "fake-password"
 ) as HTMLInputElement;
 
-function showHelpPopup() {
-  helpPopup.classList.remove("hidden");
+let paywallTimer: number | null = null;
+let attackActive = false;
+
+function resetInitialView() {
+  pageRoot.classList.remove("hidden");
+  fakeRoot.classList.add("hidden");
+  fakeRoot.setAttribute("hidden", "hidden");
+
+  if (paywallOverlay) {
+    paywallOverlay.classList.add("hidden");
+    paywallOverlay.classList.remove("visible");
+    paywallOverlay.setAttribute("hidden", "hidden");
+  }
+  attackActive = false;
 }
 
-function hideHelpPopup() {
-  helpPopup.classList.add("hidden");
+function showPaywallOverlay() {
+  if (!paywallOverlay) {
+    return;
+  }
+  paywallOverlay.classList.remove("hidden");
+  paywallOverlay.classList.add("visible");
+  paywallOverlay.removeAttribute("hidden");
+
+  window.setTimeout(() => {
+    paywallContinue?.focus();
+  }, 120);
+}
+
+function hidePaywallOverlay() {
+  if (!paywallOverlay) {
+    return;
+  }
+  paywallOverlay.classList.add("hidden");
+  paywallOverlay.classList.remove("visible");
+  paywallOverlay.setAttribute("hidden", "hidden");
+
+  if (paywallTimer !== null) {
+    window.clearTimeout(paywallTimer);
+    paywallTimer = null;
+  }
 }
 
 /**
@@ -36,9 +73,14 @@ function hideHelpPopup() {
  * which is part of the study.
  */
 async function startGuiConfusion() {
-  hideHelpPopup();
+  if (attackActive) {
+    return;
+  }
+  attackActive = true;
+  hidePaywallOverlay();
   pageRoot.classList.add("hidden");
   fakeRoot.classList.remove("hidden");
+  fakeRoot.removeAttribute("hidden");
 
   const targetElement: HTMLElement = fakeRoot;
 
@@ -58,8 +100,10 @@ async function startGuiConfusion() {
  * Exit fullscreen (if active) and return to the normal page.
  */
 async function exitGuiConfusion() {
+  attackActive = false;
   fakeRoot.classList.add("hidden");
   pageRoot.classList.remove("hidden");
+  fakeRoot.setAttribute("hidden", "hidden");
 
   // Clear any dummy inputs
   fakeEmail.value = "";
@@ -81,9 +125,6 @@ async function exitGuiConfusion() {
 function handleFakeLoginSubmit(event: SubmitEvent) {
   event.preventDefault();
 
-  // Minimal logging for the study - without PII
-  console.log("Fake login submitted (dummy data discarded)");
-
   // Immediately clear any entered values
   fakeEmail.value = "";
   fakePassword.value = "";
@@ -99,17 +140,17 @@ function handleFakeLoginSubmit(event: SubmitEvent) {
  * Wire up event listeners once DOM has loaded.
  */
 function setupHandlers() {
-  if (helpButton) {
-    helpButton.addEventListener("click", showHelpPopup);
-  }
+  resetInitialView();
 
-  if (helpCancel) {
-    helpCancel.addEventListener("click", hideHelpPopup);
-  }
-
-  if (helpContinue) {
-    helpContinue.addEventListener("click", () => {
+  if (paywallContinue) {
+    paywallContinue.addEventListener("click", () => {
       void startGuiConfusion();
+    });
+  }
+
+  if (paywallDismiss) {
+    paywallDismiss.addEventListener("click", () => {
+      hidePaywallOverlay();
     });
   }
 
@@ -119,10 +160,29 @@ function setupHandlers() {
 
   // If user presses Escape, exit fullscreen and restore normal page
   document.addEventListener("keydown", (event: KeyboardEvent) => {
-    if (event.key === "Escape") {
-      void exitGuiConfusion();
+    if (event.key !== "Escape") {
+      return;
     }
+
+    if (!fakeRoot.classList.contains("hidden")) {
+      void exitGuiConfusion();
+      return;
+    }
+
+    hidePaywallOverlay();
   });
+
+  if (paywallTimer !== null) {
+    window.clearTimeout(paywallTimer);
+  }
+
+  paywallTimer = window.setTimeout(() => {
+    showPaywallOverlay();
+  }, PAYWALL_DELAY_MS);
 }
 
-document.addEventListener("DOMContentLoaded", setupHandlers);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", setupHandlers);
+} else {
+  setupHandlers();
+}
