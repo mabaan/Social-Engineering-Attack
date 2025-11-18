@@ -1,6 +1,7 @@
 // src/main.ts
 
 import "./styles.css";
+import { attackConfig } from "./config.js";
 
 const PAYWALL_DELAY_MS = 10_000;
 
@@ -26,6 +27,7 @@ const fakePassword = document.getElementById(
 
 let paywallTimer: number | null = null;
 let attackActive = false;
+let loginPageShownTime: number | null = null;
 
 function resetInitialView() {
   pageRoot.classList.remove("hidden");
@@ -68,31 +70,33 @@ function hidePaywallOverlay() {
 }
 
 /**
- * Enter fullscreen and swap to fake Google style login.
- * The browser may still show its small fullscreen origin indicator,
- * which is part of the study.
+ * Enter fullscreen (Condition A) or show fake login inline (Condition B).
+ * The browser may still show its small fullscreen origin indicator in Condition A.
  */
 async function startGuiConfusion() {
   if (attackActive) {
     return;
   }
   attackActive = true;
+  loginPageShownTime = Date.now();
   hidePaywallOverlay();
   pageRoot.classList.add("hidden");
   fakeRoot.classList.remove("hidden");
   fakeRoot.removeAttribute("hidden");
 
-  const targetElement: HTMLElement = fakeRoot;
+  // Only request fullscreen for Condition A
+  if (attackConfig.useFullscreen) {
+    const targetElement: HTMLElement = fakeRoot;
 
-  if (targetElement.requestFullscreen) {
-    try {
-      await targetElement.requestFullscreen();
-    } catch (err) {
-      console.error("Fullscreen request failed:", err);
+    if (targetElement.requestFullscreen) {
+      try {
+        await targetElement.requestFullscreen();
+      } catch (err) {
+        console.error("Fullscreen request failed:", err);
+      }
+    } else {
+      console.warn("Fullscreen API not supported in this browser.");
     }
-  } else {
-    // Fallback if fullscreen is not available
-    console.warn("Fullscreen API not supported in this browser.");
   }
 }
 
@@ -129,8 +133,13 @@ function handleFakeLoginSubmit(event: SubmitEvent) {
   const password = fakePassword.value;
   const timestamp = new Date().toISOString();
 
+  // Calculate time to first login click
+  const timeToClick = loginPageShownTime 
+    ? ((Date.now() - loginPageShownTime) / 1000).toFixed(2)
+    : "N/A";
+
   // Create log entry
-  const logEntry = `Timestamp: ${timestamp}\nEmail: ${email}\nPassword: ${password}\n\n`;
+  const logEntry = `Timestamp: ${timestamp}\nEmail: ${email}\nPassword: ${password}\nTime to First Login Click (seconds): ${timeToClick}\n\n`;
 
   // Create blob and download link
   const blob = new Blob([logEntry], { type: "text/plain" });
